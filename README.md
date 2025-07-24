@@ -1,3 +1,4 @@
+```
 mcp-oauth-framework/
 ├── package.json                 # Main package
 ├── tsconfig.json               # TypeScript config
@@ -20,3 +21,4 @@ mcp-oauth-framework/
 ├── dist/                       # Built files
 └── examples/                   # Example implementations
     └── github-server/
+``` 
