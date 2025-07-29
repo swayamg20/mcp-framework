@@ -1,6 +1,6 @@
 {
   "name": "@sg20/mcp-oauth-framework",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "OAuth authentication framework for MCP (Model Context Protocol) servers - the Rails for MCP OAuth",
   "type": "module",
   "main": "dist/index.js",
