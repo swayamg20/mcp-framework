@@ -42,42 +42,169 @@ This is a complete example of an MCP (Model Context Protocol) server that provid
 - Search code within repositories
 - Advanced search filters
 
-## Quick Start
+## Step-by-Step Setup Guide
 
-### 1. Setup GitHub OAuth App
+### Step 1: Create GitHub OAuth App
 
-1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
-2. Click "New OAuth App"
-3. Fill in the details:
-   - **Application name**: "My MCP Server"
-   - **Homepage URL**: `http://localhost:8080`
-   - **Authorization callback URL**: `http://localhost:8080/oauth/callback`
-4. Save the **Client ID** and **Client Secret**
+1. **Go to GitHub Developer Settings**:
+   - Visit [https://github.com/settings/developers](https://github.com/settings/developers)
+   - Click **"New OAuth App"**
 
-### 2. Install Dependencies
+2. **Configure Your OAuth App**:
+   ```
+   Application name: GitHub MCP Server
+   Homepage URL: http://localhost:8080
+   Application description: MCP server for GitHub integration
+   Authorization callback URL: http://localhost:8080/oauth/callback
+   ```
 
-```bash
-cd examples/github-server
-npm install
-```
+3. **Save Your Credentials**:
+   - Copy the **Client ID** (you'll need this)
+   - Generate and copy the **Client Secret** (optional but recommended)
 
-### 3. Configure Environment
+### Step 2: Install and Configure
 
-```bash
-cp .env.example .env
-# Edit .env and add your GitHub OAuth credentials
-```
+1. **Install Dependencies**:
+   ```bash
+   cd examples/github-server
+   npm install
+   ```
 
-### 4. Build and Run
+2. **Set Up Environment**:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Edit `.env` file**:
+   ```bash
+   # Required
+   GITHUB_CLIENT_ID=your_actual_github_client_id_here
+   
+   # Optional but recommended
+   GITHUB_CLIENT_SECRET=your_actual_github_client_secret_here
+   
+   # Optional: Enable detailed logging
+   DEBUG=false
+   ```
+
+### Step 3: Build the Server
 
 ```bash
 npm run build
-npm start
 ```
 
-### 5. Test with MCP Client
+### Step 4: Add to Claude Desktop
 
-The server will start and wait for MCP connections via stdio. You can test it with any MCP-compatible client.
+1. **Find your Claude config file**:
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+
+2. **Add the server configuration**:
+   ```json
+   {
+     "mcpServers": {
+       "github": {
+         "command": "node",
+         "args": ["/absolute/path/to/examples/github-server/dist/index.js"],
+         "env": {
+           "GITHUB_CLIENT_ID": "your_actual_github_client_id_here",
+           "GITHUB_CLIENT_SECRET": "your_actual_github_client_secret_here"
+         }
+       }
+     }
+   }
+   ```
+
+   **Important**: Replace `/absolute/path/to/` with the actual full path to your project.
+
+### Step 5: Restart Claude Desktop
+
+Close and reopen Claude Desktop to load the new MCP server.
+
+## How Authentication Works
+
+### First Time Authentication Flow
+
+1. **Start a Conversation**: Open Claude Desktop and start a new conversation
+
+2. **Use a GitHub Tool**: Ask Claude to help with GitHub, for example:
+   ```
+   "Can you list my GitHub repositories?"
+   ```
+
+3. **Authentication Triggers**: 
+   - Claude will call the `list-repos` tool
+   - Since this requires authentication, the MCP server will start the OAuth flow
+
+4. **Browser Opens Automatically**:
+   - Your default browser will open to GitHub's authorization page
+   - You'll see: "Authorize GitHub MCP Server to access your account"
+
+5. **Grant Permissions**:
+   - Review the requested permissions (repo access, user email, etc.)
+   - Click **"Authorize application"**
+
+6. **Automatic Redirect**:
+   - GitHub redirects back to `http://localhost:8080/oauth/callback`
+   - You'll see: "✅ Authentication Successful - You can close this window"
+
+7. **Back to Claude**:
+   - The browser tab closes automatically
+   - Claude receives your repository list and displays it
+
+### Subsequent Uses
+
+- **No Browser Required**: Authentication tokens are stored securely locally
+- **Automatic Refresh**: Expired tokens are refreshed automatically
+- **All Tools Work**: Any GitHub tool will use the stored authentication
+
+### Token Storage Location
+
+Tokens are stored securely in:
+```
+~/.mcp-oauth/mcp-oauth:github.token
+```
+- **Encrypted**: Tokens are encrypted with a machine-specific key
+- **Automatic Cleanup**: Expired tokens are removed automatically
+
+## Testing Your Setup
+
+### Method 1: Through Claude Desktop
+
+After setup, ask Claude:
+
+```
+"List my GitHub repositories"
+```
+
+**Expected Result**: 
+- First time: Browser opens for OAuth
+- Subsequent times: Direct list of your repositories
+
+### Method 2: Using MCP Inspector (Developer Tool)
+
+```bash
+# Install MCP Inspector
+npm install -g @modelcontextprotocol/inspector
+
+# Test your server
+npx @modelcontextprotocol/inspector node dist/index.js
+```
+
+This opens a web interface where you can:
+- See all available tools
+- Test tool calls manually
+- View authentication status
+- Debug issues
+
+### Method 3: Direct Testing
+
+```bash
+# Run with debug logging
+DEBUG=true node dist/index.js
+```
+
+Then send a test MCP request via stdin to see detailed logs.
 
 ## Available Tools
 
