@@ -1,0 +1,35 @@
+{
+  "name": "mcp-github-server-example",
+  "version": "1.0.0",
+  "description": "Example GitHub MCP server using the mcp-oauth-framework",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-github-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "mcp",
+    "github",
+    "oauth",
+    "server",
+    "example"
+  ],
+  "author": "Swayam Gupta",
+  "license": "MIT",
+  "dependencies": {
+    "@sg20/mcp-oauth-framework": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
