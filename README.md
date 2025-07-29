@@ -69,6 +69,9 @@ npx @community/github-server  // Auto OAuth flow in browser
 
 ---
 
-**Is this an accurate summary of your vision?**
-
 ```
+
+<!-- 
+client ID: Ov23li8SZkbJhClZYmoK
+client secret: cb60a5a3cdfc7943da57df54608a4d987c92f77e
+ -->
