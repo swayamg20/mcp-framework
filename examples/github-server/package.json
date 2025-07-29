@@ -23,7 +23,8 @@
   "author": "Swayam Gupta",
   "license": "MIT",
   "dependencies": {
-    "@sg20/mcp-oauth-framework": "0.1.0"
+    "@sg20/mcp-oauth-framework": "0.1.0",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

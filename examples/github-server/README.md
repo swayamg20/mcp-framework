@@ -105,16 +105,14 @@ npm run build
      "mcpServers": {
        "github": {
          "command": "node",
-         "args": ["/absolute/path/to/examples/github-server/dist/index.js"],
-         "env": {
-           "GITHUB_CLIENT_ID": "your_actual_github_client_id_here",
-           "GITHUB_CLIENT_SECRET": "your_actual_github_client_secret_here"
-         }
+         "args": ["/absolute/path/to/examples/github-server/dist/index.js"]
        }
      }
    }
    ```
 
+   **That's it!** No environment variables needed - the server reads from `.env` automatically.
+   
    **Important**: Replace `/absolute/path/to/` with the actual full path to your project.
 
 ### Step 5: Restart Claude Desktop
