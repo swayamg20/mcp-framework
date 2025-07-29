@@ -1,7 +1,7 @@
 {
-  "name": "mcp-framework",
-  "version": "0.0.1",
-  "description": "OAuth authentication framework for MCP (Model Context Protocol) servers",
+  "name": "@sg20/mcp-oauth-framework",
+  "version": "0.1.0",
+  "description": "OAuth authentication framework for MCP (Model Context Protocol) servers - the Rails for MCP OAuth",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,14 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
-    "test": "echo \"Tests coming soon\" && exit 0"
+    "test": "echo \"Tests coming soon\" && exit 0",
+    "lint": "echo \"Linting coming soon\" && exit 0",
+    "security-audit": "npm audit --audit-level moderate",
+    "type-check": "tsc --noEmit",
+    "validate-exports": "node -e \"import('./dist/index.js').then(() => import('./dist/auth/index.js')).then(() => import('./dist/base/index.js')).then(() => console.log('✅ All exports valid')).catch(e => { console.error('❌ Export validation failed:', e.message); process.exit(1); })\""
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "mcp",
@@ -41,17 +48,23 @@
     "authentication",
     "model-context-protocol",
     "ai",
-    "llm"
+    "llm",
+    "framework",
+    "oauth2",
+    "pkce",
+    "github",
+    "google",
+    "microsoft"
   ],
-  "author": "Swayam Gupta",
+  "author": "Swayam Gupta <gupta.swayam123@gmail.com>",
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/swayamg20/mcp-framework",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/mcp-oauth-framework.git"
+    "url": "git+https://github.com/swayamg20/mcp-framework.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/mcp-oauth-framework/issues"
+    "url": "https://github.com/swayamg20/mcp-framework/issues"
   },
   "engines": {
     "node": ">=18.0.0"

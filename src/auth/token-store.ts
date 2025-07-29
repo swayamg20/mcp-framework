@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { homedir } from 'os';
 import { join, dirname } from 'path';
-import { createHash, createCipher, createDecipher } from 'crypto';
+import { createHash, createCipheriv, createDecipheriv, randomBytes as cryptoRandomBytes } from 'crypto';
 import {
   OAuthTokens,
   TokenStorage,
@@ -264,10 +264,14 @@ export class FileTokenStore implements TokenStorage {
   private encryptData(tokens: OAuthTokens): string {
     try {
       const algorithm = 'aes-256-cbc';
-      const cipher = createCipher(algorithm, this.encryptionKey);
+      const iv = cryptoRandomBytes(16);
+      const key = Buffer.from(this.encryptionKey, 'hex').subarray(0, 32);
+      const cipher = createCipheriv(algorithm, key, iv);
+      
       let encrypted = cipher.update(JSON.stringify(tokens), 'utf8', 'hex');
       encrypted += cipher.final('hex');
-      return encrypted;
+      
+      return iv.toString('hex') + ':' + encrypted;
     } catch (error) {
       throw createError(
         'ENCRYPTION_FAILED',
@@ -280,9 +284,19 @@ export class FileTokenStore implements TokenStorage {
   private decryptData(encryptedData: string): OAuthTokens {
     try {
       const algorithm = 'aes-256-cbc';
-      const decipher = createDecipher(algorithm, this.encryptionKey);
-      let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+      const [ivHex, encrypted] = encryptedData.split(':');
+      
+      if (!ivHex || !encrypted) {
+        throw new Error('Invalid encrypted data format');
+      }
+      
+      const iv = Buffer.from(ivHex, 'hex');
+      const key = Buffer.from(this.encryptionKey, 'hex').subarray(0, 32);
+      const decipher = createDecipheriv(algorithm, key, iv);
+      
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
       decrypted += decipher.final('utf8');
+      
       return JSON.parse(decrypted);
     } catch (error) {
       throw createError(

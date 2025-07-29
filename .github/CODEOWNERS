@@ -1,0 +1,20 @@
+# Global code owners
+* @swayamg20
+
+# Package configuration and security-sensitive files
+package.json @swayamg20
+package-lock.json @swayamg20
+.github/ @swayamg20
+.npmignore @swayamg20
+
+# Core authentication module - requires security review
+src/auth/ @swayamg20
+src/shared/utils.ts @swayamg20
+
+# Release and CI configuration
+.github/workflows/ @swayamg20
+
+# Documentation that affects public API
+README.md @swayamg20
+USAGE_GUIDE.md @swayamg20
+CLAUDE.md @swayamg20
