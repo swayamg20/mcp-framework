@@ -13,8 +13,7 @@ export class GitHubMCPServer extends BaseMCPServer {
         allow_signup: 'false'
       }
     };
-
-    // Add client secret if provided
+    
     if (process.env.GITHUB_CLIENT_SECRET) {
       githubProvider.clientSecret = process.env.GITHUB_CLIENT_SECRET;
     }

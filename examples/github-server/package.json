@@ -11,6 +11,10 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
+    "start:debug": "DEBUG=true node dist/index.js",
+    "test": "npm run test:config && npm run test:oauth",
+    "test:config": "node -e \"import('dotenv').then(dotenv => { dotenv.config(); if(!process.env.GITHUB_CLIENT_ID) { console.log('❌ Missing GITHUB_CLIENT_ID in .env'); process.exit(1); } else { console.log('✅ Environment configured'); } })\"",
+    "test:oauth": "node test/oauth-test.js",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -23,7 +27,7 @@
   "author": "Swayam Gupta",
   "license": "MIT",
   "dependencies": {
-    "@sg20/mcp-oauth-framework": "0.1.0",
+    "@sg20/mcp-oauth-framework": "file:../../",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
